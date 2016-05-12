@@ -12,6 +12,17 @@ src_managed/
 project/boot/
 project/plugins/project/
 
+
+.idea
+.settings
+.classpath
+.project
+.cache
+*.iml
+*.log*
+*.swp
+target
+
 # Scala-IDE specific
 .scala_dependencies
 .worksheet
