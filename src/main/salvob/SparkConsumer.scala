@@ -8,7 +8,6 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.{SparkConf, SparkContext}
 //import org.json4s.DefaultFormats
 
-import titandb._
 
 object SparkConsumer {
 
@@ -42,17 +41,15 @@ object SparkConsumer {
     val topic:String = "posts"
     val topicMap = Map(topic -> 1)
 
-    //TITANDB connection
-    val confPath: String = System.getProperty("user.dir")+"/src/resources/"+"titan/config/titan-cassandra-es.properties"
-    val conn = new TitanModule(confPath)
-    System.out.println("CONNESSIONE AVVENUTA")
+
 
     //Define the input sources by creating input DStreams.
     //Discretized Stream or DStream is the basic abstraction provided by Spark Streaming.
     // It represents a continuous stream of data
     //a DStream is represented by a continuous series of RDDs
 
-    val kafkaStream = KafkaUtils.createStream(ssc, zkQuorum, inputGroup, topicMap)
+    val kafkaStream = KafkaUtils.createStream(ssc, zkQuorum, inputGroup, topicMap).map(_._2)
+
 
 
     val count = kafkaStream.count()
@@ -62,7 +59,7 @@ object SparkConsumer {
     val sqlContext = new org.apache.spark.sql.SQLContext(sc)
 
     //for every message Kafka, get its second element (the first are info about the kafka status)
-    kafkaStream.foreachRDD((rdd._2, time) => {
+    kafkaStream.foreachRDD((rdd, time) => {
       //if we received any messages into Kafka stream, analyse them
 
       val count = rdd.count()
