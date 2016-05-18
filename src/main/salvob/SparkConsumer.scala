@@ -54,11 +54,7 @@ object SparkConsumer {
 
     val count = kafkaStream.count()
 
-    //SPARKSQL
-
-    val sqlContext = new org.apache.spark.sql.SQLContext(sc)
-
-    //for every message Kafka, get its second element (the first are info about the kafka status)
+        //for every message Kafka, get its second element (the first are info about the kafka status)
     kafkaStream.foreachRDD((rdd, time) => {
       //if we received any messages into Kafka stream, analyse them
 
@@ -71,18 +67,12 @@ object SparkConsumer {
         rdd.foreach(record => {
           //println(record)
 
-          //parser JSON with sparkSQL
-          // Create the DataFrame
-          val df = sqlContext.read.json(record)
 
-          // Show the content of the DataFrame
-          df.show()
 
-          //JSON
+                    //JSON
           /*
           http://stackoverflow.com/questions/4169153/what-is-the-most-straightforward-way-to-parse-json-in-scala/4169292#4169292
            */
-          val parsedJson = parse(record)
 
         })
 
