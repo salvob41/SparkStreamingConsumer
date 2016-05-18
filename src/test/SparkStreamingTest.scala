@@ -1,4 +1,4 @@
-import org.apache.spark.rdd.RDD
+/* import org.apache.spark.rdd.RDD
 import org.apache.spark.streaming.{Seconds, Time}
 import org.mkuthan.spark.SparkStreamingSpec
 import org.scalatest.concurrent.Eventually
@@ -79,3 +79,5 @@ class SparkStreamingTest extends FlatSpec
   }
 
 }
+
+*/
