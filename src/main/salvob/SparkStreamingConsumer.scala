@@ -3,16 +3,19 @@ package salvob
 /**
   * Created by salvob on 12/05/2016.
   */
+
 import org.apache.spark.streaming.kafka.{KafkaUtils, _}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.{SparkConf, SparkContext}
+
 //import org.json4s.DefaultFormats
 
 
-object SparkConsumer {
+object SparkStreamingConsumer {
 
   //needed to make the format conversion to case class - import DefaultFormats from lift-jsons
   import net.liftweb.json.{DefaultFormats, _}
+
   implicit val formats = DefaultFormats
 
   private var numMsgCollected = 0L
@@ -38,7 +41,7 @@ object SparkConsumer {
     val zkQuorum = "localhost:2181" //zookeeper IP address
     val userName = "sam" // change to your user
     val inputGroup = userName + "Group" //ConsumerGroup
-    val topic:String = "posts"
+    val topic: String = "posts"
     val topicMap = Map(topic -> 1)
 
 
@@ -54,22 +57,20 @@ object SparkConsumer {
 
     val count = kafkaStream.count()
 
-        //for every message Kafka, get its second element (the first are info about the kafka status)
+    //for every message Kafka, get its second element (the first are info about the kafka status)
     kafkaStream.foreachRDD((rdd, time) => {
       //if we received any messages into Kafka stream, analyse them
 
       val count = rdd.count()
-      if (count > 0){
+      if (count > 0) {
         //save the RDD as file
         val outputRDD = rdd.repartition(1)
         outputRDD.saveAsTextFile("output/posts_" + time.milliseconds.toString)
 
         rdd.foreach(record => {
-          //println(record)
+          println(record)
 
-
-
-                    //JSON
+          //JSON
           /*
           http://stackoverflow.com/questions/4169153/what-is-the-most-straightforward-way-to-parse-json-in-scala/4169292#4169292
            */
@@ -84,7 +85,7 @@ object SparkConsumer {
 
           val file = "Stats.txt"
           val writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)))
-          writer.write("Post collected: "+numMsgCollected + "\n")
+          writer.write("Post collected: " + numMsgCollected + "\n")
           writer.close()
 
           System.exit(0)

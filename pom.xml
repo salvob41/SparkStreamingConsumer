@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>salvob</groupId>
-    <artifactId>SparkConsumer</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <artifactId>SparkStreamingConsumer</artifactId>
+    <version>0.1</version>
     <packaging>jar</packaging>
 
     <properties>
