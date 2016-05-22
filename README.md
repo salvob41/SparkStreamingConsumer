@@ -1,2 +1,2 @@
 # SparkStreamingConsumer
-a spark Streaming Consumer that read from Kafka and print out the records
+a spark Streaming Consumer that reads from Kafka and print out the records
